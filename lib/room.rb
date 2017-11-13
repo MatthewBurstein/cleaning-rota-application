@@ -1,6 +1,8 @@
 class Room
-  attr_reader :chore_array
-  def initialize(chore_array)
+  attr_reader :room_name
+  attr_accessor :chore_array
+  def initialize(room_name, chore_array)
+    @room_name = room_name
     @chore_array = chore_array
 
   end
