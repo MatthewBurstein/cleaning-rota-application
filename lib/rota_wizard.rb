@@ -31,7 +31,7 @@ Amazing! Now provide a list of up to five rooms which need cleaning, separated b
   end
 
 puts """
-Perfect! Now, for each room, please list the chores which need to be completed.
+Perfect! Now, for each room, please list up to five chores which need to be completed.
 """
 
   rooms_chores = {}
@@ -67,16 +67,13 @@ if File.exist?("#{rota.rota_name}.db")
 else
   db = SQLite3::Database.new("#{rota.rota_name}.db")
 
-  rows = db.execute ("
+  db.execute ("
     create table housemates(
       id int,
-    housemate_name varchar(50),
-    weeks_on_time int,
-    weeks_late int,
-    weeks_missed int
+      housemate_name varchar(50),
+      weeks_on_time int,
+      weeks_late int,
+      weeks_missed int
     );")
 
 end
-
-puts rows
-rows.inspect
