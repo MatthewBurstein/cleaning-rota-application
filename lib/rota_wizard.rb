@@ -64,12 +64,11 @@ room_5 = Room.new(rooms[4], rooms_chores[rooms[4]])
 
 room_variable_array = [room_1, room_2, room_3, room_4, room_5]
 
-housemate_1_room_array = room_variable_array
-housemate_2_room_array = room_variable_array.rotate(1)
-housemate_3_room_array = room_variable_array.rotate(2)
-housemate_4_room_array = room_variable_array.rotate(3)
-housemate_5_room_array = room_variable_array.rotate(4)
-
+housemate_1 = Housemate.new(housemates[0], room_variable_array)
+housemate_2 = Housemate.new(housemates[1], room_variable_array.rotate(1))
+housemate_3 = Housemate.new(housemates[2], room_variable_array.rotate(2))
+housemate_4 = Housemate.new(housemates[3], room_variable_array.rotate(3))
+housemate_5 = Housemate.new(housemates[4], room_variable_array.rotate(4))
 
 # create database file
 
