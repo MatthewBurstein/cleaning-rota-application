@@ -62,6 +62,13 @@ room_5 = Room.new(rooms[4], rooms_chores[rooms[4]])
 
 # assign chores
 
+room_variable_array = [room_1, room_2, room_3, room_4, room_5]
+
+housemate_1_room_array = room_variable_array
+housemate_2_room_array = room_variable_array.rotate(1)
+housemate_3_room_array = room_variable_array.rotate(2)
+housemate_4_room_array = room_variable_array.rotate(3)
+housemate_5_room_array = room_variable_array.rotate(4)
 
 
 # create database file
