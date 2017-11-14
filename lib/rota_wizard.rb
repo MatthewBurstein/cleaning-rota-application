@@ -60,7 +60,11 @@ room_3 = Room.new(rooms[2], rooms_chores[rooms[2]])
 room_4 = Room.new(rooms[3], rooms_chores[rooms[3]])
 room_5 = Room.new(rooms[4], rooms_chores[rooms[4]])
 
+# assign chores
 
+
+
+# create database file
 
 if File.exist?("#{rota.rota_name}.db")
   puts "There is already rota with this name."
