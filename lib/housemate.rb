@@ -2,18 +2,18 @@ require "Date"
 
 class Housemate
 
-  attr_accessor :housemate_name, :weeks_on_time, :weeks_late, :weeks_missed, :room_array, :start_date
+  attr_accessor :name, :weeks_on_time, :weeks_late, :weeks_missed, :rooms, :start_date
 
-  def initialize(name, room_array)
-    @housemate_name = name
-    @room_array = room_array
+  def initialize(name, rooms = [])
+    @name = name
+    @rooms = rooms
     @weeks_on_time = 0
     @weeks_late = 0
     @weeks_missed = 0
     @start_date = first_monday(Date.today)
   end
 
-  def create_houesmate_rota (array_rooms)
+  def create_housemate_rota (rooms)
 
   end
 
