@@ -16,3 +16,12 @@
       - rename rota
 
 7.  Look into bucketing to account for arbitrary number of rooms and housemates. at the moment the wizard only handles identitcal numers of rooms and housemates fairly
+
+8. use csv library to write information to csv file for storing. Play with irb first to get an idea how to create csv etc. look at ruby documentation
+
+
+#method is instance method
+
+::method is class method
+
+join codebar slack matthew blewitt

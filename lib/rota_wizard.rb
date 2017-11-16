@@ -60,6 +60,7 @@ housemates.each do |housemate|
   puts "#{housemate.name} has these rooms #{room_names}"
 end
 
+
 =begin
 
 housemate_1 = Housemate.new(housemates[0])
