@@ -2,6 +2,7 @@ require_relative "rota"
 require_relative "room"
 require_relative "housemate"
 require "sqlite3"
+require "CSV"
 
 puts """
 This wizard will help you create a cleaning rota for a shared house.
@@ -55,51 +56,20 @@ Great! Now that's done. I'll create the rota, assigning each housemate to a room
 
 housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx) }
 
+# printing to test
 housemates.each do |housemate|
   room_names = housemate.rooms.map { |room| room.room_name}.join(", ")
   puts "#{housemate.name} has these rooms #{room_names}"
 end
 
+#create and write housemates and rooms to .csv
 
-=begin
+rota_csv = File.new("#{rota.name}_rota.csv", "w+")
 
-housemate_1 = Housemate.new(housemates[0])
-housemate_2 = Housemate.new(housemates[1])
-housemate_3 = Housemate.new(housemates[2])
-housemate_4 = Housemate.new(housemates[3])
-housemate_5 = Housemate.new(housemates[4])
-
-room_1 = Room.new(rooms[0], rooms_chores[rooms[0]])
-room_2 = Room.new(rooms[1], rooms_chores[rooms[1]])
-room_3 = Room.new(rooms[2], rooms_chores[rooms[2]])
-room_4 = Room.new(rooms[3], rooms_chores[rooms[3]])
-room_5 = Room.new(rooms[4], rooms_chores[rooms[4]])
-
-# assign chores
-
-room_variable_array = [room_1, room_2, room_3, room_4, room_5]
-
-housemate_1 = Housemate.new(housemates[0], room_variable_array)
-housemate_2 = Housemate.new(housemates[1], room_variable_array.rotate(1))
-housemate_3 = Housemate.new(housemates[2], room_variable_array.rotate(2))
-housemate_4 = Housemate.new(housemates[3], room_variable_array.rotate(3))
-housemate_5 = Housemate.new(housemates[4], room_variable_array.rotate(4))
-
-# create database file
-
-if File.exist?("#{rota.rota_name}.db")
-  puts "There is already rota with this name."
-else
-  db = SQLite3::Database.new("#{rota.rota_name}.db")
-
-  db.execute ("
-    create table housemates(
-      id int,
-      housemate_name varchar(50),
-      weeks_on_time int,
-      weeks_late int,
-      weeks_missed int
-    );")
-
+CSV.open("#{rota.name}_rota.csv", "wb") do |csv|
+  housemates.each do |housemate|
+    csv << housemate.rooms.map { |room| room.room_name }.unshift(housemate.name)
+  end
 end
-=end
+
+rota_csv.close

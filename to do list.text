@@ -1,9 +1,9 @@
-1.  Work out how weeks is going to work for each housemate
-      Eventually this will be a function of the number of housemates and the number of rooms.
+//1.  Work out how weeks is going to work for each housemate
+//      Eventually this will be a function of the number of housemates and the number of rooms.
 
 2.  Write information to database file
 
-3.  What is the relationship between database and objects. How does this work
+//3.  What is the relationship between database and objects. How does this work
 
 4.  Create a way to view an active rota
 
