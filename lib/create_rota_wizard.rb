@@ -33,8 +33,6 @@ Amazing! Now provide a list of up to five rooms which need cleaning, separated b
     room.strip!
   end
 
-  rooms.shuffle!.map! { |room| Room.new(room) }
-
 puts """
 Perfect! Now, for each room, please list up to five chores which need to be completed.
 """
@@ -52,7 +50,11 @@ puts """
 Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week.
 """
 
-# associate rooms with people
+# shuffle rooms to ensure randomness
+
+rooms.shuffle!.map! { |room| Room.new(room) }
+
+# assign rooms to housemates
 
 housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx) }
 
