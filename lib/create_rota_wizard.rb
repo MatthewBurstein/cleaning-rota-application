@@ -1,6 +1,6 @@
-require_relative "rota"
-require_relative "room"
-require_relative "housemate"
+require_relative "classes/rota"
+require_relative "classes/room"
+require_relative "classes/housemate"
 require "sqlite3"
 require "CSV"
 
