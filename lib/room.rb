@@ -1,8 +1,8 @@
 class Room
-  attr_reader :room_name
+  attr_reader :name
   attr_accessor :chores
-  def initialize(room_name, chores = [])
-    @room_name = room_name
+  def initialize(name, chores = [])
+    @name = name
     @chores = chores
 
   end

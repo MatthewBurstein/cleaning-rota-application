@@ -13,7 +13,7 @@ First, choose a name for your rota:
   input = gets.chomp
   rota = Rota.new("#{input}")
 
-  puts "the rota name is #{rota}"
+  puts "the rota name is #{rota.name}"
 
 puts """
 Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons.
@@ -37,8 +37,12 @@ puts """
 Perfect! Now, for each room, please list up to five chores which need to be completed.
 """
 
+#convert elements of rooms into variables
+
+  rooms.map! { |room| Room.new(room) }
+
   rooms.each do |room|
-    puts "Chores for #{room.room_name} separated by semicolons:"
+    puts "Chores for #{room.name} separated by semicolons:"
 
     chores = gets.chomp.split(";").each do |chore|
       chore.strip!
@@ -52,7 +56,7 @@ Great! Now that's done. I'll create the rota, assigning each housemate to a room
 
 # shuffle rooms to ensure randomness
 
-rooms.shuffle!.map! { |room| Room.new(room) }
+rooms.shuffle!
 
 # assign rooms to housemates
 
@@ -60,7 +64,7 @@ housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx
 
 # printing to test
 housemates.each do |housemate|
-  room_names = housemate.rooms.map { |room| room.room_name}.join(", ")
+  room_names = housemate.rooms.map{ |room| room.name }.join(", ")
   puts "#{housemate.name} has these rooms #{room_names}"
 end
 
@@ -70,8 +74,18 @@ rota_csv = File.new("#{rota.name}_rota.csv", "w+")
 
 CSV.open("#{rota.name}_rota.csv", "wb") do |csv|
   housemates.each do |housemate|
-    csv << housemate.rooms.map { |room| room.room_name }.unshift(housemate.name)
+    csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
   end
 end
 
 rota_csv.close
+
+rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
+
+CSV.open("#{rota.name}_rooms.csv", "wb") do |csv|
+  rooms.each do |room|
+    csv << room.chores.unshift(room.name)
+  end
+end
+
+rooms_csv.close
