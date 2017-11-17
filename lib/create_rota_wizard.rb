@@ -68,6 +68,24 @@ housemates.each do |housemate|
   puts "#{housemate.name} has these rooms #{room_names}"
 end
 
+#create general folder structure for rotas
+
+parent_directory = "/Users/matt/Coding/Cleaning Rota App"
+
+if !File.exist?("#{parent_directory}/rotas")
+  Dir.chdir("#{parent_directory}") { |directory| Dir.mkdir("rotas")}
+end
+
+general_rotas_directory = "#{parent_directory}/rotas"
+
+# create folder structure for this rota
+
+if !File.exist?("#{general_rotas_directory}/#{rota.name}")
+  Dir.chdir("#{general_rotas_directory}") { |directory| Dir.mkdir("#{rota.name}")}
+end
+
+Dir.chdir("#{general_rotas_directory}/#{rota.name}")
+
 #create and write housemates and rooms to .csv
 
 rota_csv = File.new("#{rota.name}_rota.csv", "w+")
@@ -79,6 +97,8 @@ CSV.open("#{rota.name}_rota.csv", "wb") do |csv|
 end
 
 rota_csv.close
+
+#create and write rooms and chores to .csv
 
 rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
 
