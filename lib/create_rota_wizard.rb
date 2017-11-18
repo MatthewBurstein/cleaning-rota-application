@@ -13,7 +13,7 @@ First, choose a name for your rota:
   input = gets.chomp
   rota = Rota.new("#{input}")
 
-  puts "the rota name is #{rota.name}"
+puts "You are create the rota '#{rota.name}'."
 
 puts """
 Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons.
@@ -88,9 +88,18 @@ Dir.chdir("#{general_rotas_directory}/#{rota.name}")
 
 #create and write housemates and rooms to .csv
 
+headers = ["Housemates"]
+current_date = rota.start_date
+
+(rooms.length).times do
+  headers.push(current_date)
+  current_date += 7
+end
+
 rota_csv = File.new("#{rota.name}_rota.csv", "w+")
 
-CSV.open("#{rota.name}_rota.csv", "wb") do |csv|
+CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv|
+  csv << headers
   housemates.each do |housemate|
     csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
   end
