@@ -27,7 +27,3 @@ class Housemate
   end
 
 end
-
-matt = Housemate.new("Matt")
-
-puts "#{matt.start_date}"

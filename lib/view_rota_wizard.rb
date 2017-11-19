@@ -26,7 +26,7 @@ class ViewRotaWizard
 
 end
 
-
+=begin
 general_rotas_directory = "/Users/matt/Coding/Cleaning Rota App/rotas"
 
 puts """
@@ -36,3 +36,4 @@ What is the name of the rota you would like to view?
 rota_name = gets.chomp
 
 puts Dir.exist?("#{general_rotas_directory}/rotas/#{rota_name}")
+=end
