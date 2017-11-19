@@ -4,7 +4,10 @@ class Room
   def initialize(name, chores = [])
     @name = name
     @chores = chores
+  end
 
+  def number_of_chores
+    chores.length
   end
 
   def show_chores

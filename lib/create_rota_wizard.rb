@@ -4,6 +4,7 @@ require_relative "classes/housemate"
 require "sqlite3"
 require "CSV"
 
+
 puts """
 This wizard will help you create a cleaning rota for a shared house.
 
@@ -88,18 +89,18 @@ Dir.chdir("#{general_rotas_directory}/#{rota.name}")
 
 #create and write housemates and rooms to .csv
 
-headers = ["Housemates"]
-current_date = rota.start_date
+rota_csv_headers = ["Housemate"]
 
 (rooms.length).times do
-  headers.push(current_date)
+  current_date = rota.start_date
+  rota_csv_headers << "w/c #{current_date}"
   current_date += 7
 end
 
 rota_csv = File.new("#{rota.name}_rota.csv", "w+")
 
 CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv|
-  csv << headers
+  csv << rota_csv_headers
   housemates.each do |housemate|
     csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
   end
@@ -109,9 +110,18 @@ rota_csv.close
 
 #create and write rooms and chores to .csv
 
+max_chores = rooms.max_by{ |room| room.number_of_chores}.number_of_chores
+rooms_csv_headers = ["Room"]
+
+(1..max_chores).each do |i|
+  rooms_csv_headers << "Chore #{i}"
+end
+
+
 rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
 
-CSV.open("#{rota.name}_rooms.csv", "wb") do |csv|
+CSV.open("#{rota.name}_rooms.csv", "wb", headers:true) do |csv|
+  csv << rooms_csv_headers
   rooms.each do |room|
     csv << room.chores.unshift(room.name)
   end
