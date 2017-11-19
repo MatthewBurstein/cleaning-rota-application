@@ -93,7 +93,7 @@ rota_csv_headers = ["Housemate"]
 
 (rooms.length).times do
   current_date = rota.start_date
-  rota_csv_headers << "w/c #{current_date}"
+  rota_csv_headers << "w/c #{current_date.strftime("%d %b")}"
   current_date += 7
 end
 
