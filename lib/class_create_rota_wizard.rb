@@ -5,17 +5,15 @@ require "sqlite3"
 require "CSV"
 
 class CreateRotaWizard
-
+  attr_accessor :rota, :housemates, :rooms
   def initialize
     puts """
     This wizard will help you create a cleaning rota for a shared house.
 
     First, choose a name for your rota:
     """
-
-      input = gets.chomp
-      rota = Rota.new("#{input}")
-
+    input = gets.chomp
+    @rota = Rota.new("#{input}")
     puts "You are create the rota '#{rota.name}'."
   end
 
@@ -28,7 +26,7 @@ class CreateRotaWizard
         person.strip!
       end
 
-      housemates.map! { |name| Housemate.new(name) }
+      @housemates = housemates.map! { |name| Housemate.new(name) }
   end
 
   def create_rooms
@@ -44,7 +42,7 @@ class CreateRotaWizard
     rooms.map! { |room| Room.new(room) }
 
     # shuffle rooms to ensure randomness
-    rooms.shuffle!
+    @rooms = rooms.shuffle!
   end
 
   def create_chores(rooms)
@@ -98,7 +96,7 @@ class CreateRotaWizard
     Dir.chdir("#{general_rotas_directory}/#{rota.name}")
   end
 
-  def create_hosuemates_csv(rota, housemates, rooms)
+  def create_housemates_csv(rota, housemates, rooms)
     #create and write housemates and rooms to .csv
 
     rota_csv_headers = ["Housemate"]
@@ -144,3 +142,12 @@ class CreateRotaWizard
     rooms_csv.close
   end
 end
+
+this_rota = CreateRotaWizard.new
+this_rota.create_housemates
+this_rota.create_rooms
+this_rota.create_chores(this_rota.rooms)
+this_rota.assign_rooms(this_rota.housemates, this_rota.rooms)
+this_rota.create_folder_structure(this_rota.rota)
+this_rota.create_housemates_csv(this_rota.rota, this_rota.housemates, this_rota.rooms)
+this_rota.create_rooms_csv(this_rota.rota, this_rota.rooms)
