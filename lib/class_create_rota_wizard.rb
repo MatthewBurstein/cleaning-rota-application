@@ -1,7 +1,6 @@
 require_relative "classes/rota"
 require_relative "classes/room"
 require_relative "classes/housemate"
-require "sqlite3"
 require "CSV"
 
 class CreateRotaWizard
@@ -90,50 +89,45 @@ class CreateRotaWizard
   end
 
   def create_housemates_csv(rota, housemates, rooms)
-    #create and write housemates and rooms to .csv
-
+    # Result is .csv with headers "housemates" and dates in form "1 Jan".
+    # All other rows are in form housmate_name,first_room,second_room,...
+    # Prepare header row
     rota_csv_headers = ["Housemate"]
-
     (rooms.length).times do
       current_date = rota.start_date
       rota_csv_headers << "w/c #{current_date.strftime("%d %b")}"
       current_date += 7
     end
-
+    # Create and complete CSV
     rota_csv = File.new("#{rota.name}_rota.csv", "w+")
-
-    CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv|
+    CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv| # Add rows to .csv
       csv << rota_csv_headers
       housemates.each do |housemate|
         csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
       end
     end
-
     rota_csv.close
   end
 
   def create_rooms_csv(rota, rooms)
-
-    #create and write rooms and chores to .csv
+    # Result is .csv with headers Room,Chore_1,Chore_2,Chore_3...
+    # Rows list the chores for each room
+    # Prepare Header row
     max_chores = rooms.max_by{ |room| room.number_of_chores}.number_of_chores
     rooms_csv_headers = ["Room"]
-
     (1..max_chores).each do |i|
       rooms_csv_headers << "Chore #{i}"
     end
-
-
+    # Create and complete csv
     rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
-
     CSV.open("#{rota.name}_rooms.csv", "wb", headers:true) do |csv|
       csv << rooms_csv_headers
       rooms.each do |room|
         csv << room.chores.unshift(room.name)
       end
     end
-
     rooms_csv.close
   end
 end
 
-#this_rota = CreateRotaWizard.new
+# CreateRotaWizard.new # Used to test class
