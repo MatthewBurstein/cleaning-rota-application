@@ -1,24 +1,14 @@
-//1.  Work out how weeks is going to work for each housemate
-//      Eventually this will be a function of the number of housemates and the number of rooms.
+1.  How can I use rspec
 
-2.  Write information to database file
-
-//3.  What is the relationship between database and objects. How does this work
-
-4.  Create a way to view an active rota
-
-5.  How can I use rspec
-
-6.  What other functionality can I build into the Database
+2.  What other functionality can I build into the Database
       - add rooms/chores/housemates
       - remove rooms/chores/housemates
       - rename rooms/chores/housemates
       - rename rota
 
-7.  Look into bucketing to account for arbitrary number of rooms and housemates. at the moment the wizard only handles identitcal numers of rooms and housemates fairly
+3.  Look into bucketing to account for arbitrary number of rooms and housemates. at the moment the wizard only handles identical numbers of rooms and housemates fairly
 
-8. use csv library to write information to csv file for storing. Play with irb first to get an idea how to create csv etc. look at ruby documentation
-
+4.  Better name for slurp_rota_csv and slurp_rooms_csv given that they
 
 #method is instance method
 

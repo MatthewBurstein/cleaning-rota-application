@@ -7,6 +7,19 @@ require "CSV"
 class CreateRotaWizard
   attr_accessor :rota, :housemates, :rooms
   def initialize
+    init_create_rota #create @rota
+    create_housemates #create @housemates
+    create_rooms #create @rooms
+    create_chores(@rooms)
+    assign_rooms(@housemates, @rooms)
+    create_folder_structure(@rota)
+    create_housemates_csv(@rota, @housemates, @rooms)
+    create_rooms_csv(@rota, @rooms)
+  end
+
+  private
+
+  def init_create_rota
     puts """
     This wizard will help you create a cleaning rota for a shared house.
 
@@ -21,78 +34,58 @@ class CreateRotaWizard
     puts """
     Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons.
     """
-
-      housemates = gets.chomp.split(";").each do |person|
-        person.strip!
-      end
-
-      @housemates = housemates.map! { |name| Housemate.new(name) }
+    housemates = gets.chomp.split(";").each do |person|
+      person.strip!
+    end
+    @housemates = housemates.map! { |name| Housemate.new(name) }
   end
 
   def create_rooms
     puts """
     Amazing! Now provide a list of up to five rooms which need cleaning, separated by semicolons.
     """
-
-      rooms = gets.chomp.split(";").each do |room|
-        room.strip!
-      end
-
-    #convert elements of rooms into variables
-    rooms.map! { |room| Room.new(room) }
-
-    # shuffle rooms to ensure randomness
-    @rooms = rooms.shuffle!
+    rooms = gets.chomp.split(";").each do |room|
+      room.strip!
+    end
+    rooms.map! { |room| Room.new(room) } #convert elements of rooms into variables
+    @rooms = rooms.shuffle! # shuffle rooms to ensure randomness
   end
 
   def create_chores(rooms)
     puts """
     Perfect! Now, for each room, please list up to five chores which need to be completed.
     """
-
-      rooms.each do |room|
-        puts "Chores for #{room.name} separated by semicolons:"
-
-        chores = gets.chomp.split(";").each do |chore|
-          chore.strip!
-        end
-        room.chores = chores
+    rooms.each do |room|
+      puts "Chores for #{room.name} separated by semicolons:"
+      chores = gets.chomp.split(";").each do |chore|
+        chore.strip!
       end
-
+      room.chores = chores
+    end
     puts """
     Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week.
     """
   end
 
   def assign_rooms(housemates, rooms)
-    # assign rooms to housemates
-
-    housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx) }
-
-    # printing to test
+    housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx)} # assign rooms to housemates
     housemates.each do |housemate|
       room_names = housemate.rooms.map{ |room| room.name }.join(", ")
-      puts "#{housemate.name} has these rooms #{room_names}"
+      puts "#{housemate.name} has will clean rooms in the following order: #{room_names}"
     end
   end
 
   def create_folder_structure(rota)
-    #create general folder structure for rotas
-
     parent_directory = "/Users/matt/Coding/Cleaning Rota App"
-
+    general_rotas_directory = "#{parent_directory}/rotas"
+    #create parent rota directory
     if !File.exist?("#{parent_directory}/rotas")
       Dir.chdir("#{parent_directory}") { |directory| Dir.mkdir("rotas")}
     end
-
-    general_rotas_directory = "#{parent_directory}/rotas"
-
     # create folder structure for this rota
-
     if !File.exist?("#{general_rotas_directory}/#{rota.name}")
       Dir.chdir("#{general_rotas_directory}") { |directory| Dir.mkdir("#{rota.name}")}
     end
-
     Dir.chdir("#{general_rotas_directory}/#{rota.name}")
   end
 
@@ -143,11 +136,4 @@ class CreateRotaWizard
   end
 end
 
-this_rota = CreateRotaWizard.new
-this_rota.create_housemates
-this_rota.create_rooms
-this_rota.create_chores(this_rota.rooms)
-this_rota.assign_rooms(this_rota.housemates, this_rota.rooms)
-this_rota.create_folder_structure(this_rota.rota)
-this_rota.create_housemates_csv(this_rota.rota, this_rota.housemates, this_rota.rooms)
-this_rota.create_rooms_csv(this_rota.rota, this_rota.rooms)
+#this_rota = CreateRotaWizard.new
