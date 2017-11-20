@@ -19,20 +19,14 @@ class CreateRotaWizard
   private
 
   def init_create_rota
-    puts """
-    This wizard will help you create a cleaning rota for a shared house.
-
-    First, choose a name for your rota:
-    """
+    puts "This wizard will help you create a cleaning rota for a shared house.\nFirst, choose a name for your rota:"
     input = gets.chomp
     @rota = Rota.new("#{input}")
     puts "You are create the rota '#{rota.name}'."
   end
 
   def create_housemates
-    puts """
-    Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons.
-    """
+    puts "Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons."
     housemates = gets.chomp.split(";").each do |person|
       person.strip!
     end
@@ -40,9 +34,7 @@ class CreateRotaWizard
   end
 
   def create_rooms
-    puts """
-    Amazing! Now provide a list of up to five rooms which need cleaning, separated by semicolons.
-    """
+    puts "Amazing! Now provide a list of up to five rooms which need cleaning, separated by semicolons."
     rooms = gets.chomp.split(";").each do |room|
       room.strip!
     end
@@ -51,9 +43,7 @@ class CreateRotaWizard
   end
 
   def create_chores(rooms)
-    puts """
-    Perfect! Now, for each room, please list up to five chores which need to be completed.
-    """
+    puts "Perfect! Now, for each room, please list up to five chores which need to be completed."
     rooms.each do |room|
       puts "Chores for #{room.name} separated by semicolons:"
       chores = gets.chomp.split(";").each do |chore|
@@ -61,9 +51,7 @@ class CreateRotaWizard
       end
       room.chores = chores
     end
-    puts """
-    Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week.
-    """
+    puts "Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week."
   end
 
   def assign_rooms(housemates, rooms)
@@ -130,4 +118,4 @@ class CreateRotaWizard
   end
 end
 
-# CreateRotaWizard.new # Used to test class
+CreateRotaWizard.new # Used to test class
