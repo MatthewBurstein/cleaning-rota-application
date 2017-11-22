@@ -4,7 +4,7 @@ require_relative "classes/room"
 require_relative "classes/housemate"
 
 class ViewRotaWizard
-  attr_accessor :rota
+  attr_accessor :rota, :housemates, :rooms
   attr_reader :directory
 
   def initialize(rota)
@@ -64,8 +64,8 @@ class ViewRotaWizard
 end
 
 rota = ViewRotaWizard.new("MyRota")
-# rota.slurp_rota_csv # used for debugging
-rota.slurp_rooms_csv
+rota.slurp_rota_csv # used for testing
+rota.slurp_rooms_csv # used for testing
 
 
 

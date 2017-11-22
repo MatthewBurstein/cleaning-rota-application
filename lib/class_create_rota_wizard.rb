@@ -26,7 +26,7 @@ class CreateRotaWizard
   end
 
   def create_housemates
-    puts "Great! Now list up to 5 housemates living in the house. Names should be separated by semicolons."
+    puts "Great! Now list the housemates living in the house. Names should be separated by semicolons."
     housemates = gets.chomp.split(";").each do |person|
       person.strip!
     end
@@ -34,16 +34,16 @@ class CreateRotaWizard
   end
 
   def create_rooms
-    puts "Amazing! Now provide a list of up to five rooms which need cleaning, separated by semicolons."
+    puts "Amazing! Now provide a list of rooms which need cleaning, separated by semicolons."
     rooms = gets.chomp.split(";").each do |room|
       room.strip!
     end
     rooms.map! { |room| Room.new(room) } #convert elements of rooms into variables
-    @rooms = rooms.shuffle! # shuffle rooms to ensure randomness
+    @rooms = rooms
   end
 
   def create_chores(rooms)
-    puts "Perfect! Now, for each room, please list up to five chores which need to be completed."
+    puts "Perfect! Now, for each room, please the chores which need to be completed."
     rooms.each do |room|
       puts "Chores for #{room.name} separated by semicolons:"
       chores = gets.chomp.split(";").each do |chore|
@@ -55,6 +55,7 @@ class CreateRotaWizard
   end
 
   def assign_rooms(housemates, rooms)
+    @rooms.shuffle! # shuffle rooms to ensure randomness of assignment
     housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx)} # assign rooms to housemates
     housemates.each do |housemate|
       room_names = housemate.rooms.map{ |room| room.name }.join(", ")
