@@ -1,6 +1,6 @@
 class Room
   attr_accessor :name, :chores
-  def initialize(name, chores = [])
+  def initialize(name, chores = ["no_chores"])
     @name = name
     @chores = chores
   end

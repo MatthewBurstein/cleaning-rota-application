@@ -20,9 +20,11 @@ class CreateRotaWizard
 
   def init_create_rota
     puts "This wizard will help you create a cleaning rota for a shared house.\nFirst, choose a name for your rota:"
-    input = gets.chomp
-    @rota = Rota.new("#{input}")
-    puts "You are create the rota '#{rota.name}'."
+    rota_name = gets.chomp
+    puts "how many weeks would you like this rota to run for?"
+    rota_length = gets.chomp
+    @rota = Rota.new("#{rota_name}", "#{rota_length}")
+    puts "You are creating the rota '#{@rota.name}'. which will run for #{@rota.length} weeks"
   end
 
   def create_housemates
@@ -38,6 +40,11 @@ class CreateRotaWizard
     rooms = gets.chomp.split(";").each do |room|
       room.strip!
     end
+    if @housemates.length > rooms.length #if more housemates than rooms, pad @rooms with null values.
+      (@housemates.length - rooms.length).times do
+        rooms << "no_room"
+      end
+    end
     rooms.map! { |room| Room.new(room) } #convert elements of rooms into variables
     @rooms = rooms
   end
@@ -45,11 +52,13 @@ class CreateRotaWizard
   def create_chores(rooms)
     puts "Perfect! Now, for each room, please the chores which need to be completed."
     rooms.each do |room|
-      puts "Chores for #{room.name} separated by semicolons:"
-      chores = gets.chomp.split(";").each do |chore|
-        chore.strip!
+      if room.name != "no_room" #if null room then leave chores as default, "no_chores"
+        puts "Chores for #{room.name} separated by semicolons:"
+        chores = gets.chomp.split(";").each do |chore|
+          chore.strip!
+        end
+        room.chores = chores
       end
-      room.chores = chores
     end
     puts "Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week."
   end
@@ -59,7 +68,7 @@ class CreateRotaWizard
     housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx)} # assign rooms to housemates
     housemates.each do |housemate|
       room_names = housemate.rooms.map{ |room| room.name }.join(", ")
-      puts "#{housemate.name} has will clean rooms in the following order: #{room_names}"
+      puts "#{housemate.name} will clean rooms in the following order: #{room_names}"
     end
   end
 
@@ -100,7 +109,7 @@ class CreateRotaWizard
 
   def create_rooms_csv(rota, rooms)
     # Result is .csv with headers Room,Chore_1,Chore_2,Chore_3...
-    # Rows list the chores for each room
+    # Each row is a list of the chores for one room
     # Prepare Header row
     max_chores = rooms.max_by{ |room| room.number_of_chores}.number_of_chores
     rooms_csv_headers = ["Room"]

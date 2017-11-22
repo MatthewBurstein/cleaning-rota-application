@@ -37,12 +37,6 @@ class ViewRotaWizard
     # puts "#{@rooms[0].name} has these chores: #{@rooms[0].chores}" #used for testing
   end
 
-  def close_rota_csv
-  end
-
-  def close_rooms_csv
-  end
-
   def what_to_do
   end
 
@@ -64,8 +58,8 @@ class ViewRotaWizard
 end
 
 rota = ViewRotaWizard.new("MyRota")
-rota.slurp_rota_csv # used for testing
-rota.slurp_rooms_csv # used for testing
+#rota.slurp_rota_csv # used for testing
+#rota.slurp_rooms_csv # used for testing
 
 
 

@@ -8,7 +8,25 @@
 
 3.  Look into bucketing to account for arbitrary number of rooms and housemates. at the moment the wizard only handles identical numbers of rooms and housemates fairly
 
-4.  Better name for slurp_rota_csv and slurp_rooms_csv given that they
+    rules for handling number of rooms != number of number of housemates
+
+    housemates > rooms:
+      1. assign fallow weeks for housemates so that number of housemates = number of rooms
+          - pad room array with appropriate null values
+          - when shuffling rooms, ensure that no two null values are next to each other, including rooms[0] != rooms[-1]
+
+    rooms > housemates:
+      1. leave some rooms fallow each week.
+          - minimise the period of time that any room goes fallow
+
+      2. assign multiple rooms to housemates. rotate which housemates have greater number of rooms each week.
+
+4.  Better name for slurp_rota_csv and slurp_rooms_csv
+
+5.  Add way to manage home directory. Currently all files are created in Cleaning Rota App/Rotas/[Rota Name]/
+
+
+
 
 #method is instance method
 

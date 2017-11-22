@@ -1,5 +1,8 @@
-Housemate,w/c 13 Nov,w/c 13 Nov,w/c 13 Nov,w/c 13 Nov
-Matt,hall,bathroom,kitchen,stairs
-Tom,bathroom,kitchen,stairs,hall
-Kathy,kitchen,stairs,hall,bathroom
-Peter,stairs,hall,bathroom,kitchen
+Housemate,w/c 27 Nov,w/c 27 Nov,w/c 27 Nov,w/c 27 Nov,w/c 27 Nov,w/c 27 Nov,w/c 27 Nov
+Matt,no_room,bath,kitchen,no_room,stairs,hall,no_room
+Kathy,bath,kitchen,no_room,stairs,hall,no_room,no_room
+Ellie,kitchen,no_room,stairs,hall,no_room,no_room,bath
+Sean,no_room,stairs,hall,no_room,no_room,bath,kitchen
+David,stairs,hall,no_room,no_room,bath,kitchen,no_room
+Dalia,hall,no_room,no_room,bath,kitchen,no_room,stairs
+Eloise,no_room,no_room,bath,kitchen,no_room,stairs,hall
