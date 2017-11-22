@@ -3,11 +3,12 @@ require_relative "room"
 require "Date"
 
 class Rota
-  attr_accessor :name, :start_date, :length
-  def initialize(name, length)
+  attr_accessor :name, :start_date, :length, :directory
+  def initialize(name, length = 0)
     @name = name
     @start_date = first_monday(Date.today)
-    @length = length
+    @length = length #in weeks
+    @directory = ""
   end
 
   private

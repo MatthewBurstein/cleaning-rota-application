@@ -1,3 +1,4 @@
+=begin
 require_relative "class_create_rota_wizard"
 require_relative "view_rota_wizard.rb"
 
@@ -11,4 +12,14 @@ elsif input == "v"
   puts "I haven't made this yet"
 else
   puts "invalid input"
+end
+=end
+
+class RunMe
+  def initialize
+  end
+
+  def tester
+    return "I'm a test"
+  end
 end

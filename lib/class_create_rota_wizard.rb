@@ -20,10 +20,9 @@ class CreateRotaWizard
 
   def init_create_rota
     puts "This wizard will help you create a cleaning rota for a shared house.\nFirst, choose a name for your rota:"
-    rota_name = gets.chomp
+    @rota = Rota.new("#{gets.chomp}")
     puts "how many weeks would you like this rota to run for?"
-    rota_length = gets.chomp
-    @rota = Rota.new("#{rota_name}", "#{rota_length}")
+    @rota.length = gets.chomp
     puts "You are creating the rota '#{@rota.name}'. which will run for #{@rota.length} weeks"
   end
 

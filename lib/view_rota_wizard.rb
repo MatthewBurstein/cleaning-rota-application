@@ -4,19 +4,19 @@ require_relative "classes/room"
 require_relative "classes/housemate"
 
 class ViewRotaWizard
-  attr_accessor :rota, :housemates, :rooms
-  attr_reader :directory
+  attr_accessor :rota, :housemates, :rooms, :directory
 
-  def initialize(rota)
-    @rota = rota
-    @directory = "/Users/matt/Coding/Cleaning Rota App/rotas"
+  def initialize
+    puts "This wizard will hep you view and update an existing rota.\nFirst, indicate the name of the rota you would like to view."
+    @rota = Rota.new("#{gets.chomp}")
+    rota.directory = "/Users/matt/Coding/Cleaning Rota App/rotas"
     @housemates = []
     @rooms = []
     #puts "what would you like to do?"
   end
 
   def slurp_rota_csv #opens and converts to useable format
-    csv = CSV.read("#{@directory}/#{@rota}/#{@rota}_rota.csv", return_headers:false)
+    csv = CSV.read("#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv", return_headers:false)
     rota_headers = csv.shift #remove headers
     csv.map do |row|
       housemate = Housemate.new(row.shift) #convert names to objects
@@ -27,7 +27,7 @@ class ViewRotaWizard
   end
 
   def slurp_rooms_csv #opens and converts to useable format
-    csv = CSV.read("#{@directory}/#{@rota}/#{@rota}_rooms.csv", return_headers:false)
+    csv = CSV.read("#{@rota.directory}/#{@rota.name}/#{@rota.name}_rooms.csv", return_headers:false)
     rooms_headers = csv.shift # remove headers
     csv.map do |row|
       room = Room.new(row.shift) #convert names to objects
@@ -57,10 +57,11 @@ class ViewRotaWizard
 
 end
 
-rota = ViewRotaWizard.new("MyRota")
-#rota.slurp_rota_csv # used for testing
-#rota.slurp_rooms_csv # used for testing
+this_rota = ViewRotaWizard.new
+this_rota.slurp_rota_csv # used for testing
+this_rota.slurp_rooms_csv # used for testing
 
+puts this_rota
 
 
 =begin
