@@ -125,6 +125,19 @@ class CreateRotaWizard
     end
     rooms_csv.close
   end
+
+  public
+
+  def full_length_rota
+    num_complete_rooms = (@rota.length / @rooms.length)
+    remainder = @rota.length % @rooms.length
+    housemate_rota = @rooms * num_complete_rooms
+    remainder.times do |i|
+      housemate_rota.push(@rooms[i])
+    end
+    housemate_rota
+  end
+
 end
 
 CreateRotaWizard.new # Used to test class
