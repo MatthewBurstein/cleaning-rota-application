@@ -9,11 +9,11 @@ class CreateRotaWizard
     init_create_rota #create @rota
     create_housemates #create @housemates
     create_rooms #create @rooms
-    create_chores(@rooms)
-    assign_rooms(@housemates, @rooms)
+    create_chores(@rota)
+    assign_rooms(@rota)
     create_folder_structure(@rota)
-    create_housemates_csv(@rota, @housemates, @rooms)
-    create_rooms_csv(@rota, @rooms)
+    create_housemates_csv(@rota)
+    create_rooms_csv(@rota)
   end
 
   private
@@ -31,7 +31,7 @@ class CreateRotaWizard
     housemates = gets.chomp.split(";").each do |person|
       person.strip!
     end
-    @housemates = housemates.map! { |name| Housemate.new(name) }
+    @rota.housemates = housemates.map! { |name| Housemate.new(name) }
   end
 
   def create_rooms
@@ -39,18 +39,18 @@ class CreateRotaWizard
     rooms = gets.chomp.split(";").each do |room|
       room.strip!
     end
-    if @housemates.length > rooms.length #if more housemates than rooms, pad @rooms with null values.
-      (@housemates.length - rooms.length).times do
+    if @rota.housemates.length > rooms.length #if more housemates than rooms, pad @rooms with null values.
+      (@rota.housemates.length - rooms.length).times do
         rooms << "no_room"
       end
     end
     rooms.map! { |room| Room.new(room) } #convert elements of rooms into variables
-    @rooms = rooms
+    @rota.rooms = rooms
   end
 
-  def create_chores(rooms)
+  def create_chores(rota)
     puts "Perfect! Now, for each room, please the chores which need to be completed."
-    rooms.each do |room|
+    rota.rooms.each do |room|
       if room.name != "no_room" #if null room then leave chores as default, "no_chores"
         puts "Chores for #{room.name} separated by semicolons:"
         chores = gets.chomp.split(";").each do |chore|
@@ -62,10 +62,10 @@ class CreateRotaWizard
     puts "Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week."
   end
 
-  def assign_rooms(housemates, rooms)
-    @rooms.shuffle! # shuffle rooms to ensure randomness of assignment
-    housemates.each_with_index { |housemate, idx| housemate.rooms = rooms.rotate(idx)} # assign rooms to housemates
-    housemates.each do |housemate|
+  def assign_rooms(rota)
+    rota.rooms.shuffle! # shuffle rooms to ensure randomness of assignment
+    rota.housemates.each_with_index { |housemate, idx| housemate.rooms = @rota.rooms.rotate(idx)} # assign rooms to housemates
+    rota.housemates.each do |housemate|
       room_names = housemate.rooms.map{ |room| room.name }.join(", ")
       puts "#{housemate.name} will clean rooms in the following order: #{room_names}"
     end
@@ -85,12 +85,12 @@ class CreateRotaWizard
     Dir.chdir("#{general_rotas_directory}/#{rota.name}")
   end
 
-  def create_housemates_csv(rota, housemates, rooms)
+  def create_housemates_csv(rota)
     # Result is .csv with headers "housemates" and dates in form "1 Jan".
     # All other rows are in form housmate_name,first_room,second_room,...
     # Prepare header row
     rota_csv_headers = ["Housemate"]
-    (rooms.length).times do
+    (rota.rooms.length).times do
       current_date = rota.start_date
       rota_csv_headers << "w/c #{current_date.strftime("%d %b")}"
       current_date += 7
@@ -99,18 +99,18 @@ class CreateRotaWizard
     rota_csv = File.new("#{rota.name}_rota.csv", "w+")
     CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv| # Add rows to .csv
       csv << rota_csv_headers
-      housemates.each do |housemate|
+      rota.housemates.each do |housemate|
         csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
       end
     end
     rota_csv.close
   end
 
-  def create_rooms_csv(rota, rooms)
+  def create_rooms_csv(rota)
     # Result is .csv with headers Room,Chore_1,Chore_2,Chore_3...
     # Each row is a list of the chores for one room
     # Prepare Header row
-    max_chores = rooms.max_by{ |room| room.number_of_chores}.number_of_chores
+    max_chores = rota.rooms.max_by{ |room| room.number_of_chores}.number_of_chores
     rooms_csv_headers = ["Room"]
     (1..max_chores).each do |i|
       rooms_csv_headers << "Chore #{i}"
@@ -119,7 +119,7 @@ class CreateRotaWizard
     rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
     CSV.open("#{rota.name}_rooms.csv", "wb", headers:true) do |csv|
       csv << rooms_csv_headers
-      rooms.each do |room|
+      rota.rooms.each do |room|
         csv << room.chores.unshift(room.name)
       end
     end
@@ -129,11 +129,11 @@ class CreateRotaWizard
   public
 
   def calculate_full_rota_rooms
-    num_complete_rooms = (@rota.length / @rooms.length)
-    remainder = @rota.length % @rooms.length
+    num_complete_rooms = (@rota.length / @rota.rooms.length)
+    remainder = @rota.length % @rota.rooms.length
     housemate_rota = @rooms * num_complete_rooms
     remainder.times do |i|
-      housemate_rota.push(@rooms[i])
+      housemate_rota.push(@rota.rooms[i])
     end
     housemate_rota
   end
