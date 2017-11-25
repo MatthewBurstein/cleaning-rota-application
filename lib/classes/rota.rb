@@ -15,7 +15,7 @@ class Rota
 
   def first_monday (date)
     while !date.monday?
-      date = date + 1
+      date += 1
     end
     date
   end

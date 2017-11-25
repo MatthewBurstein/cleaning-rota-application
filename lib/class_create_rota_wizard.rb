@@ -128,7 +128,7 @@ class CreateRotaWizard
 
   public
 
-  def full_length_rota
+  def calculate_full_rota_rooms
     num_complete_rooms = (@rota.length / @rooms.length)
     remainder = @rota.length % @rooms.length
     housemate_rota = @rooms * num_complete_rooms
