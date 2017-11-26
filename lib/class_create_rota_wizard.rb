@@ -9,11 +9,11 @@ class CreateRotaWizard
     init_create_rota #create @rota
     create_housemates #create @housemates
     create_rooms #create @rooms
-    create_chores(@rota)
-    assign_rooms(@rota)
+    create_chores(@rota.rooms)
+    assign_rooms(@rota, @rota.rooms, @rota.housemates)
     create_folder_structure(@rota)
-    create_housemates_csv(@rota)
-    create_rooms_csv(@rota)
+    create_housemates_csv(@rota, @rota.housemates)
+    create_rooms_csv(@rota, @rota.rooms)
   end
 
   private
@@ -48,9 +48,9 @@ class CreateRotaWizard
     @rota.rooms = rooms
   end
 
-  def create_chores(rota)
+  def create_chores(rooms)
     puts "Perfect! Now, for each room, please the chores which need to be completed."
-    rota.rooms.each do |room|
+    rooms.each do |room|
       if room.name != "no_room" #if null room then leave chores as default, "no_chores"
         puts "Chores for #{room.name} separated by semicolons:"
         chores = gets.chomp.split(";").each do |chore|
@@ -62,12 +62,22 @@ class CreateRotaWizard
     puts "Great! Now that's done. I'll create the rota, assigning each housemate to a room for each week starting from this week."
   end
 
-  def assign_rooms(rota)
-    rota.rooms.shuffle! # shuffle rooms to ensure randomness of assignment
-    rota.housemates.each_with_index do |housemate, idx|
-      housemate.rooms = calculate_full_rota_rooms(rota).rotate(idx)
+  def calculate_full_rota_rooms(rota, rooms)
+    num_complete_rooms = (rota.length / rooms.length)
+    remainder = rota.length % rooms.length
+    housemate_rota = rooms * num_complete_rooms
+    remainder.times do |i|
+      housemate_rota.push(rooms[i])
+    end
+    housemate_rota
+  end
+
+  def assign_rooms(rota, rooms, housemates)
+    rooms.shuffle! # shuffle rooms to ensure randomness of assignment
+    housemates.each_with_index do |housemate, idx|
+      housemate.rooms = calculate_full_rota_rooms(rota, rooms).rotate(idx)
     end # assign rooms to housemates
-    rota.housemates.each do |housemate| #print first full list of rooms for each housemate
+    housemates.each do |housemate| #print first full list of rooms for each housemate
       room_names = housemate.rooms.map{ |room| room.name }.slice(0, rota.rooms.length).join(", ")
       puts "#{housemate.name} will clean rooms in the following order: #{room_names}"
     end
@@ -87,7 +97,7 @@ class CreateRotaWizard
     Dir.chdir("#{general_rotas_directory}/#{rota.name}")
   end
 
-  def create_housemates_csv(rota)
+  def create_housemates_csv(rota, housemates)
     # Result is .csv with headers "housemates" and dates in form "1 Jan".
     # All other rows are in form housmate_name,first_room,second_room,...
     # Prepare header row
@@ -101,18 +111,18 @@ class CreateRotaWizard
     rota_csv = File.new("#{rota.name}_rota.csv", "w+")
     CSV.open("#{rota.name}_rota.csv", "wb", headers:true) do |csv| # Add rows to .csv
       csv << rota_csv_headers
-      rota.housemates.each do |housemate|
+      housemates.each do |housemate|
         csv << housemate.rooms.map { |room| room.name }.unshift(housemate.name)
       end
     end
     rota_csv.close
   end
 
-  def create_rooms_csv(rota)
+  def create_rooms_csv(rota, rooms)
     # Result is .csv with headers Room,Chore_1,Chore_2,Chore_3...
     # Each row is a list of the chores for one room
     # Prepare Header row
-    max_chores = rota.rooms.max_by{ |room| room.number_of_chores}.number_of_chores
+    max_chores = rooms.max_by{ |room| room.number_of_chores}.number_of_chores
     rooms_csv_headers = ["Room"]
     (1..max_chores).each do |i|
       rooms_csv_headers << "Chore #{i}"
@@ -121,21 +131,11 @@ class CreateRotaWizard
     rooms_csv = File.new("#{rota.name}_rooms.csv", "w+")
     CSV.open("#{rota.name}_rooms.csv", "wb", headers:true) do |csv|
       csv << rooms_csv_headers
-      rota.rooms.each do |room|
+      rooms.each do |room|
         csv << room.chores.unshift(room.name)
       end
     end
     rooms_csv.close
-  end
-
-  def calculate_full_rota_rooms(rota)
-    num_complete_rooms = (rota.length / rota.rooms.length)
-    remainder = rota.length % rota.rooms.length
-    housemate_rota = rota.rooms * num_complete_rooms
-    remainder.times do |i|
-      housemate_rota.push(rota.rooms[i])
-    end
-    housemate_rota
   end
 
 end
