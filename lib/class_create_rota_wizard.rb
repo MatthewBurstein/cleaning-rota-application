@@ -98,14 +98,14 @@ class CreateRotaWizard
   end
 
   def create_housemates_csv(rota, housemates)
-    # Result is .csv with headers "housemates" and dates in form "1 Jan".
+    # Result is .csv with headers "housemates" and dates in form "1 Jan 17".
     # All other rows are in form housmate_name,first_room,second_room,...
     # Prepare header row
     rota_csv_headers = ["Housemate"]
+    date = rota.start_date
     (rota.length).times do
-      current_date = rota.start_date
-      rota_csv_headers << "w/c #{current_date.strftime("%d %b")}"
-      current_date += 7
+      rota_csv_headers << "w/c #{date.strftime("%d %b %y")}"
+      date += 7
     end
     # Create and complete CSV
     rota_csv = File.new("#{rota.name}_rota.csv", "w+")

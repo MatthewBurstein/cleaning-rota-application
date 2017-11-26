@@ -12,3 +12,14 @@ loop do
   rooms.each_index {|i| puts rooms[i] and count += 1 if rooms[i] == rooms[i - 1]}
   break if count > 0
 end
+
+
+# NEW TEST
+require "Date"
+rota_csv_headers = ""
+10.times do
+  current_date ||= Date.today
+  rota_csv_headers << "w/c #{current_date.strftime("%d %b %y")}"
+  current_date += 7
+  rota_csv_headers
+end
