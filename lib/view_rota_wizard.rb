@@ -20,7 +20,10 @@ class ViewRotaWizard
   def slurp_rota_csv #opens and converts to useable format
     #puts "#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv"
     csv = CSV.read("#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv", return_headers:false)
-    @rota.date_list = csv.shift #remove headers
+    #extract dates and convert to Date
+    @rota.date_list = csv.shift.drop(1).map! do |date|
+      Date.strptime(date.gsub!("w/c ", ""), "%d %b %y")
+    end
     csv.map do |row|
       housemate = Housemate.new(row.shift) #convert names to objects
       housemate.rooms = row #assign rooms to housemate objects
@@ -38,7 +41,7 @@ class ViewRotaWizard
       room.chores = row #assign chores to room objects
       @rota.rooms << room #create array of room objects
     end
-     puts "#{@rota.rooms[0].name} has these chores: #{@rota.rooms[0].chores}" #used for testing
+     #puts "#{@rota.rooms[0].name} has these chores: #{@rota.rooms[0].chores}" #used for testing
   end
 
   def what_to_do
@@ -53,8 +56,13 @@ class ViewRotaWizard
   end
 
   def view_current_week
-    current_week = Date.today.next_monday - 1
-    puts current_week
+    last_monday = Date.today.next_monday - 7
+    idx = @rota.date_list.find_index(last_monday)
+    this_week = {}
+    @rota.housemates.each do |housemate|
+      this_week[housemate.name] = housemate.rooms[idx]
+    end
+    puts this_week
   end
 
   def edit_housemates
@@ -67,10 +75,11 @@ end
 
 # everything below is used only for testing
 
-this_rota = ViewRotaWizard.new
-this_rota.rota = Rota.new("MyRota")
-#this_rota.slurp_rota_csv
-#this_rota.slurp_rooms_csv
-#this_rota.get_housemates
-#this_rota.get_rooms
-this_rota.view_current_week
+wizard = ViewRotaWizard.new
+wizard.rota = Rota.new("MyRota")
+wizard.rota.directory = "/Users/matt/Coding/Cleaning Rota App/rotas"
+wizard.slurp_rota_csv
+wizard.slurp_rooms_csv
+#wizard.get_housemates
+#wizard.get_rooms
+wizard.view_current_week

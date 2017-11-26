@@ -11,7 +11,8 @@ wizard.slurp_rooms_csv # used for testing
 
 describe ViewRotaWizard do
 
-
-
+  it "should return the current week" do
+    expect(wizard.view_current_week).to eq(0)
+  end
 
 end

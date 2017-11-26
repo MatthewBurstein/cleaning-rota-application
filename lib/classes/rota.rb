@@ -12,6 +12,7 @@ class Rota
     @directory = ""
     @rooms = []
     @housemates = []
+    @date_list = []
   end
 
   def get_housemates
