@@ -13,6 +13,14 @@ class Rota
     @housemates = []
   end
 
+  def get_housemates
+    puts "The housemates in this rota are #{@housemates.join(", ")}."
+  end
+
+  def get_rooms
+    puts "The rooms in this rota are #{@rooms.join(", ")}."
+  end
+
   private
 
   def first_monday (date)

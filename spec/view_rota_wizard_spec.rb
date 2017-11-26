@@ -1,11 +1,14 @@
-#below gives the required format for rspec
-#to run the below, go to the spec folder and run rspec run_me_spec.rb
-
 require "rspec"
-require_relative "../lib/run_me"
+require_relative "../lib/view_rota_wizard"
 
-describe RunMe do
-  it "this test fails" do
-    expect(RunMe.new.tester).to eq("I'm not a test")
-  end
+this_rota = ViewRotaWizard.new
+this_rota.slurp_rota_csv # used for testing
+this_rota.slurp_rooms_csv # used for testing
+
+
+describe ViewRotaWizard do
+
+
+
+
 end

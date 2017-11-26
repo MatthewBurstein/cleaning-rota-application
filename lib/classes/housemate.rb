@@ -17,6 +17,10 @@ class Housemate
 
   end
 
+  def to_s
+    @name
+  end
+
   private
 
   def first_monday (date)

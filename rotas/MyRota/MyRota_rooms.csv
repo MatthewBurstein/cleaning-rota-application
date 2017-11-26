@@ -1,8 +1,6 @@
 Room,Chore 1,Chore 2,Chore 3,Chore 4,Chore 5,Chore 6,Chore 7
-no_room,no_chores
-bath,b1,b2,b3,b4,b5,b6,b7
-kitchen,k1,k2,k3,k4
-no_room,no_chores
-stairs,s1,s2
-hall,h1,h2,h3,h4
-no_room,no_chores
+hall,h1
+living room,l1,l2,l3
+kitchen,k1,k2,k3,k4,k5
+garden,g1,g2,g3,g4,g5,g6,g7
+bathroom,b1,b2,b3,b4

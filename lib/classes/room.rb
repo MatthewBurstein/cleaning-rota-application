@@ -13,4 +13,7 @@ class Room
     return "The chores in this room are #{chores}"
   end
 
+  def to_s
+    @name
+  end
 end
