@@ -5,7 +5,7 @@ require_relative "classes/housemate"
 require_relative "core_additions"
 
 class ViewRotaWizard
-  attr_accessor :rota, :directory
+  attr_accessor :rota
 
   def initialize
   end
@@ -18,6 +18,7 @@ class ViewRotaWizard
   end
 
   def slurp_rota_csv #opens and converts to useable format
+    #puts "#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv"
     csv = CSV.read("#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv", return_headers:false)
     @rota.date_list = csv.shift #remove headers
     csv.map do |row|
@@ -52,7 +53,8 @@ class ViewRotaWizard
   end
 
   def view_current_week
-
+    current_week = Date.today.next_monday - 1
+    puts current_week
   end
 
   def edit_housemates
@@ -67,8 +69,8 @@ end
 
 this_rota = ViewRotaWizard.new
 this_rota.rota = Rota.new("MyRota")
-this_rota.rota.directory = "/Users/matt/Coding/Cleaning Rota App/rotas"
-this_rota.slurp_rota_csv
+#this_rota.slurp_rota_csv
 #this_rota.slurp_rooms_csv
 #this_rota.get_housemates
 #this_rota.get_rooms
+this_rota.view_current_week
