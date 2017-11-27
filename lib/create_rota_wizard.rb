@@ -140,4 +140,4 @@ class CreateRotaWizard
 
 end
 
-CreateRotaWizard.new # Used to test class
+#CreateRotaWizard.new # Used to test class

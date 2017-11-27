@@ -58,7 +58,7 @@ class ViewRotaWizard
   def view_current_week
     last_monday = Date.today.next_monday - 7
     idx = @rota.date_list.find_index(last_monday)
-    this_week = {}
+    this_week = Hash.new
     @rota.housemates.each do |housemate|
       this_week[housemate.name] = housemate.rooms[idx]
     end
@@ -82,4 +82,4 @@ wizard.slurp_rota_csv
 wizard.slurp_rooms_csv
 #wizard.get_housemates
 #wizard.get_rooms
-wizard.view_current_week
+#wizard.view_current_week
