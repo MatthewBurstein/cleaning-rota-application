@@ -3,6 +3,7 @@ require_relative "classes/room"
 require_relative "classes/housemate"
 require "CSV"
 
+
 class CreateRotaWizard
   attr_accessor :rota
   def initialize
@@ -14,6 +15,7 @@ class CreateRotaWizard
     create_folder_structure(@rota)
     create_housemates_csv(@rota, @rota.housemates)
     create_rooms_csv(@rota, @rota.rooms)
+    puts "Congratulations. Your rota has been created."
   end
 
   private
@@ -28,17 +30,13 @@ class CreateRotaWizard
 
   def create_housemates
     puts "Great! Now list the housemates living in the house. Names should be separated by semicolons."
-    housemates = gets.chomp.split(";").each do |person|
-      person.strip!
-    end
+    housemates = gets.chomp.custom_to_a
     @rota.housemates = housemates.map! { |name| Housemate.new(name) }
   end
 
   def create_rooms
     puts "Amazing! Now provide a list of rooms which need cleaning, separated by semicolons."
-    rooms = gets.chomp.split(";").each do |room|
-      room.strip!
-    end
+    rooms = gets.chomp.custom_to_a
     if @rota.housemates.length > rooms.length #if more housemates than rooms, pad @rooms with null values.
       (@rota.housemates.length - rooms.length).times do
         rooms << "no_room"
@@ -53,9 +51,7 @@ class CreateRotaWizard
     rooms.each do |room|
       if room.name != "no_room" #if null room then leave chores as default, "no_chores"
         puts "Chores for #{room.name} separated by semicolons:"
-        chores = gets.chomp.split(";").each do |chore|
-          chore.strip!
-        end
+        chores = gets.chomp.custom_to_a
         room.chores = chores
       end
     end

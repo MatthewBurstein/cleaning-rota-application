@@ -20,7 +20,15 @@ class Rota
   end
 
   def get_rooms
-    puts "The rooms in this rota are #{@rooms.join(", ")}."
+    rooms_without_null = @rooms.reject{ |room| room.name == "no_room"}
+    puts "The rooms in this rota are #{rooms_without_null.join(", ")}."
+    rooms_without_null.each do |room|
+      puts "\t#{room.name}\n"
+      room.chores.each do |chore|
+        puts "\t  - #{chore}"
+      end
+      puts "\n"
+    end
   end
 
   def next_monday

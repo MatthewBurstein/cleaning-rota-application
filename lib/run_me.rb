@@ -29,7 +29,7 @@ class RunMe
         when "1"
           CreateRotaWizard.new
         when "2"
-          ViewRotaWizard.new
+          ViewRotaWizard.new.init_view_rota 
         when "3"
           puts "Goodbye!"
           exit(true)

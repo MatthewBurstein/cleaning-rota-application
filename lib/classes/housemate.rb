@@ -13,7 +13,7 @@ class Housemate
     @start_date = first_monday(Date.today)
   end
 
-  def create_housemate_rota (rooms)
+  def create_housemate_rota(rooms)
 
   end
 
@@ -23,7 +23,7 @@ class Housemate
 
   private
 
-  def first_monday (date)
+  def first_monday(date)
     while !date.monday?
       date = date - 1
     end

@@ -11,3 +11,13 @@ class Date
   end
 
 end
+
+class String
+
+  def custom_to_a
+    self.split(";").each do |person|
+      person.strip!
+    end
+  end
+
+end
