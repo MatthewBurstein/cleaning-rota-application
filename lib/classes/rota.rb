@@ -4,7 +4,8 @@ require_relative "../core_additions"
 require "Date"
 
 class Rota
-  attr_accessor :name, :start_date, :length, :directory, :rooms, :date_list, :housemates
+  attr_accessor :name, :length, :directory, :rooms, :list_of_weeks_by_monday_date, :housemates
+  attr_reader :start_date
   def initialize(name, length = 0)
     @name = name
     @start_date = Date.today.next_monday
@@ -12,7 +13,17 @@ class Rota
     @directory = ""
     @rooms = []
     @housemates = []
-    @date_list = []
+    @list_of_weeks_by_monday_date = []
+  end
+
+  def list_of_weeks_by_monday_date
+    date = @start_date
+    array_of_mondays =[]
+    @length.times do
+      array_of_mondays << date
+      date += 7
+    end
+    array_of_mondays
   end
 
   def get_housemates

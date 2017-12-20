@@ -3,7 +3,7 @@ require "date"
 class Date
 
   def next_monday
-    date = self
+    date = Date.today
     while !date.monday?
       date += 1
     end

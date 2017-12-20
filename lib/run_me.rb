@@ -1,4 +1,4 @@
-
+#!/Users/matt/.rbenv/shims/ruby -w
 require_relative "create_rota_wizard"
 require_relative "view_rota_wizard.rb"
 =begin
@@ -29,7 +29,7 @@ class RunMe
         when "1"
           CreateRotaWizard.new
         when "2"
-          ViewRotaWizard.new.init_view_rota 
+          ViewRotaWizard.new.init_view_rota
         when "3"
           puts "Goodbye!"
           exit(true)

@@ -7,9 +7,9 @@ class Housemate
   def initialize(name, rooms = [])
     @name = name
     @rooms = rooms
-    @weeks_on_time = 0
-    @weeks_late = 0
-    @weeks_missed = 0
+#    @weeks_on_time = 0
+#    @weeks_late = 0
+#    @weeks_missed = 0
     @start_date = first_monday(Date.today)
   end
 

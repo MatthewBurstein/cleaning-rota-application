@@ -39,7 +39,7 @@ class ViewRotaWizard
     #puts "#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv"
     csv = CSV.read("#{@rota.directory}/#{@rota.name}/#{@rota.name}_rota.csv", return_headers:false)
     #extract dates and convert to Date
-    @rota.date_list = csv.shift.drop(1).map! do |date|
+    @rota.list_of_weeks_by_monday_date = csv.shift.drop(1).map! do |date|
       Date.strptime(date.gsub!("w/c ", ""), "%d %b %y")
     end
     csv.map do |row|
@@ -48,7 +48,7 @@ class ViewRotaWizard
       @rota.housemates << housemate #create array of housemate objects
     end
     #puts @rota.housemates[0].rooms #used for debugging
-    #puts @rota.date_list #used for debugging
+    #puts @rota.list_of_weeks_by_monday_date #used for debugging
   end
 
   def slurp_rooms_csv #opens and converts to useable format
@@ -104,7 +104,7 @@ class ViewRotaWizard
 
   def view_current_week
     last_monday = Date.today.next_monday - 7
-    idx = @rota.date_list.find_index(last_monday)
+    idx = @rota.list_of_weeks_by_monday_date.find_index(last_monday)
     this_week = Hash.new
     @rota.housemates.each do |housemate|
       this_week[housemate.name] = housemate.rooms[idx]
