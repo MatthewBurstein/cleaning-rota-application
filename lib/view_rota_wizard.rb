@@ -156,7 +156,7 @@ class ViewRotaWizard
 
 end
 
-# everything below is used only for testing
+# everything below this is used only for testing
 
 #wizard = ViewRotaWizard.new
 #wizard.rota = Rota.new("MyRota")
