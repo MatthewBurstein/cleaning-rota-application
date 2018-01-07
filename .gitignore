@@ -1,2 +1,5 @@
+.gitignore
+.to do list.text
+.junk_for_testing.rb
 rotas/
-to do list.text
+
