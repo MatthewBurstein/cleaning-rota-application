@@ -1,5 +1,5 @@
 .gitignore
-.to_do_list.text
-.junk_for_testing.rb
+to_do_list.text
+junk_for_testing.rb
 rotas/
 
