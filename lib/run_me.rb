@@ -1,4 +1,4 @@
-#!/Users/matt/.rbenv/shims/ruby -w
+
 require_relative "create_rota_wizard"
 require_relative "view_rota_wizard.rb"
 
